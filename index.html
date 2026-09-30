@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Evolución Gym | Entrena. Evoluciona.</title>
+<meta name="description" content="Evolución Gym: equipo profesional, ambiente motivador y planes accesibles. Lunes a viernes 6 a.m. – 10 p.m.">
+<link rel="icon" href="img/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Russo+One&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#111111;
+    --bg-2:#181818;
+    --card:#1d1d1d;
+    --line:#2c2c2c;
+    --text:#f2f2f2;
+    --muted:#a3a3a3;
+    --red:#e3171f;
+    --red-dark:#b50f16;
+    --gold:#f6b21a;
+    --gold-2:#ffd34d;
+    --wa:#25d366;
+    --radius:10px;
+    --max:1140px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden}
+  img{max-width:100%;display:block}
+  a{color:inherit;text-decoration:none}
+  h1,h2,h3{font-family:'Russo One',sans-serif;font-weight:400;line-height:1.15;letter-spacing:.5px}
+  .container{width:min(var(--max),100% - 32px);margin-inline:auto}
+  section{padding:96px 0}
+  .eyebrow{color:var(--gold);font-weight:600;font-size:.8rem;letter-spacing:3px;text-transform:uppercase;margin-bottom:10px}
+  .section-title{font-size:clamp(1.8rem,4vw,2.6rem);margin-bottom:14px}
+  .section-sub{color:var(--muted);max-width:560px}
+  .center{text-align:center}
+  .center .section-sub{margin-inline:auto}
+  .grad{background:linear-gradient(180deg,var(--gold-2),var(--gold) 55%,#e08a00);-webkit-background-clip:text;background-clip:text;color:transparent}
+
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:12px 26px;border-radius:6px;font-weight:600;font-size:.95rem;transition:transform .2s,background .2s,box-shadow .2s;cursor:pointer;border:none}
+  .btn-primary{background:var(--red);color:#fff;box-shadow:0 6px 20px rgba(227,23,31,.35)}
+  .btn-primary:hover{background:var(--red-dark);transform:translateY(-2px)}
+  .btn-gold{background:var(--gold);color:#141414}
+  .btn-gold:hover{background:var(--gold-2);transform:translateY(-2px)}
+  .btn-outline{border:1px solid rgba(255,255,255,.35);color:#fff}
+  .btn-outline:hover{border-color:var(--gold);color:var(--gold)}
+
+  /* NAV */
+  header{position:fixed;inset:0 0 auto 0;z-index:50;transition:background .3s,box-shadow .3s}
+  header.scrolled{background:rgba(12,12,12,.94);backdrop-filter:blur(8px);box-shadow:0 2px 20px rgba(0,0,0,.5)}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:76px}
+  .brand{display:flex;align-items:center;gap:10px}
+  .brand img{width:52px;height:52px;object-fit:contain;background:#fff;border-radius:50%;padding:3px}
+  .brand span{font-family:'Russo One';font-size:1.1rem;letter-spacing:1px}
+  .brand span b{color:var(--gold);font-weight:400}
+  .nav-links{display:flex;gap:30px;list-style:none;font-size:.92rem}
+  .nav-links a{color:#ddd;transition:color .2s}
+  .nav-links a:hover{color:var(--gold)}
+  .nav-cta{display:flex;gap:12px;align-items:center}
+  .menu-btn{display:none;background:none;border:none;color:#fff;cursor:pointer;padding:6px}
+  .menu-btn svg{width:28px;height:28px}
+
+  /* HERO */
+  .hero{position:relative;min-height:100vh;display:grid;place-items:center;text-align:center;padding:120px 0 80px;overflow:hidden}
+  .hero-bg{position:absolute;inset:0;background:url('img/instalaciones-2.webp') center/cover no-repeat;filter:grayscale(.2)}
+  .hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.72),rgba(0,0,0,.6) 50%,var(--bg) 100%)}
+  .hero-content{position:relative;z-index:2;max-width:820px}
+  .hero-logo{width:130px;margin:0 auto 18px;filter:drop-shadow(0 6px 24px rgba(227,23,31,.45));background:#fff;border-radius:50%;padding:8px}
+  .hero h1{font-size:clamp(2.4rem,7vw,4.6rem);margin-bottom:18px}
+  .hero p{color:#ddd;font-size:1.1rem;max-width:560px;margin:0 auto 32px}
+  .hero-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+  .open-pill{display:inline-flex;align-items:center;gap:8px;background:rgba(0,0,0,.5);border:1px solid var(--line);padding:6px 14px;border-radius:30px;font-size:.85rem;margin-bottom:22px}
+  .dot{width:9px;height:9px;border-radius:50%;background:#888}
+  .dot.on{background:#22c55e;box-shadow:0 0 0 4px rgba(34,197,94,.2)}
+  .dot.off{background:var(--red);box-shadow:0 0 0 4px rgba(227,23,31,.2)}
+
+  /* STATS */
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;margin-top:-40px;position:relative;z-index:3}
+  .stat{background:var(--bg-2);padding:26px 18px;text-align:center}
+  .stat strong{display:block;font-family:'Russo One';font-size:1.9rem;color:var(--gold)}
+  .stat span{color:var(--muted);font-size:.85rem}
+
+  /* JOURNEY */
+  .split{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
+  .split-img{position:relative}
+  .split-img img{border-radius:var(--radius);aspect-ratio:4/3.3;object-fit:cover;width:100%}
+  .split-img::before{content:"";position:absolute;inset:-14px 14px 14px -14px;border:2px solid var(--red);border-radius:var(--radius);z-index:-1}
+  .checks{display:grid;grid-template-columns:1fr 1fr;gap:12px 20px;margin-top:26px;list-style:none}
+  .checks li{display:flex;gap:10px;align-items:center;font-size:.93rem;color:#ddd}
+  .checks li::before{content:"";flex:none;width:18px;height:18px;border-radius:50%;background:var(--red) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.5'%3E%3Cpath d='M5 12l5 5L20 7'/%3E%3C/svg%3E") center/11px no-repeat}
+
+  /* OFFER */
+  .offer{background:var(--bg-2)}
+  .cards-3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:48px}
+  .feature{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:32px 26px;transition:transform .25s,border-color .25s}
+  .feature:hover{transform:translateY(-6px);border-color:var(--red)}
+  .icon{width:52px;height:52px;border-radius:12px;display:grid;place-items:center;background:rgba(227,23,31,.12);color:var(--red);margin-bottom:18px}
+  .icon svg{width:26px;height:26px}
+  .feature h3{font-size:1.15rem;margin-bottom:8px}
+  .feature p{color:var(--muted);font-size:.93rem}
+
+  /* GALLERY */
+  .gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:44px}
+  .gallery button{border:none;padding:0;background:none;cursor:zoom-in;border-radius:var(--radius);overflow:hidden;position:relative}
+  .gallery img{width:100%;height:340px;object-fit:cover;transition:transform .5s}
+  .gallery button:first-child img{object-position:center 30%}
+  .gallery button:hover img{transform:scale(1.07)}
+  .gallery button::after{content:attr(data-label);position:absolute;left:0;right:0;bottom:0;padding:40px 16px 14px;text-align:left;font-weight:600;background:linear-gradient(transparent,rgba(0,0,0,.85));color:#fff;font-size:.95rem}
+  .lightbox{position:fixed;inset:0;background:rgba(0,0,0,.92);display:none;align-items:center;justify-content:center;z-index:100;padding:20px}
+  .lightbox.open{display:flex}
+  .lightbox img{max-height:86vh;max-width:min(1100px,100%);border-radius:8px}
+  .lb-btn{position:absolute;background:rgba(255,255,255,.1);border:none;color:#fff;width:48px;height:48px;border-radius:50%;cursor:pointer;font-size:1.5rem;display:grid;place-items:center}
+  .lb-btn:hover{background:var(--red)}
+  .lb-close{top:20px;right:20px}
+  .lb-prev{left:20px;top:50%;transform:translateY(-50%)}
+  .lb-next{right:20px;top:50%;transform:translateY(-50%)}
+
+  /* PRICING */
+  .pricing{background:var(--bg-2)}
+  .plans{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:48px;align-items:stretch}
+  .plan{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:34px 28px;display:flex;flex-direction:column;position:relative}
+  .plan.featured{border:2px solid var(--gold);transform:scale(1.03);background:linear-gradient(180deg,#231d10,var(--card) 45%)}
+  .badge{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:var(--gold);color:#141414;font-weight:700;font-size:.72rem;padding:4px 14px;border-radius:20px;letter-spacing:1px;text-transform:uppercase;white-space:nowrap}
+  .plan h3{font-size:1.2rem;margin-bottom:6px}
+  .plan .desc{color:var(--muted);font-size:.88rem;min-height:44px}
+  .price{font-family:'Russo One';font-size:2.6rem;margin:18px 0 4px}
+  .price small{font-family:'Inter';font-size:.9rem;color:var(--muted);font-weight:500}
+  .plan ul{list-style:none;margin:18px 0 28px;display:grid;gap:10px;flex:1}
+  .plan li{font-size:.9rem;color:#ddd;display:flex;gap:10px}
+  .plan li::before{content:"✓";color:var(--gold);font-weight:700}
+  .plan .btn{justify-content:center}
+  .note{text-align:center;color:var(--muted);font-size:.85rem;margin-top:26px}
+
+  /* SCHEDULE */
+  .schedule-box{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+  .schedule-head{display:flex;justify-content:space-between;align-items:center;padding:20px 26px;border-bottom:1px solid var(--line);gap:12px;flex-wrap:wrap}
+  .schedule-head h3{font-size:1.15rem;display:flex;align-items:center;gap:10px}
+  .schedule-head h3 svg{width:22px;height:22px;color:var(--gold)}
+  .status{display:inline-flex;align-items:center;gap:8px;font-size:.85rem;font-weight:600}
+  .schedule-row{display:flex;justify-content:space-between;padding:14px 26px;border-bottom:1px solid var(--line);font-size:.97rem}
+  .schedule-row:last-child{border-bottom:none}
+  .schedule-row.today{background:rgba(246,178,26,.09);color:var(--gold);font-weight:600}
+  .schedule-row .closed{color:var(--red)}
+  .schedule-row span:last-child{white-space:nowrap;margin-left:12px}
+  @media (max-width:640px){.schedule-row{padding:14px 18px;font-size:.9rem}.schedule-head{padding:18px}}
+
+  /* REVIEWS */
+  .reviews{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:48px}
+  .review{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:28px;text-align:center}
+  .stars{color:var(--gold);letter-spacing:4px;font-size:1.1rem;margin-bottom:12px}
+  .review p{color:#cfcfcf;font-size:.93rem;margin-bottom:16px}
+  .review strong{font-size:.9rem}
+
+  /* CTA */
+  .cta{position:relative;text-align:center;padding:120px 0;overflow:hidden}
+  .cta-bg{position:absolute;inset:0;background:url('img/instalaciones-3.webp') center/cover}
+  .cta::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(10,10,10,.92),rgba(120,8,12,.75))}
+  .cta .container{position:relative;z-index:2}
+  .cta h2{font-size:clamp(1.8rem,5vw,3rem);margin-bottom:16px}
+  .cta p{color:#ddd;margin-bottom:30px}
+
+  /* FAQ */
+  .faq-list{max-width:820px;margin:40px auto 0}
+  details{border-bottom:1px solid var(--line);padding:20px 0}
+  summary{cursor:pointer;font-weight:600;list-style:none;display:flex;justify-content:space-between;gap:16px;font-size:1.02rem}
+  summary::-webkit-details-marker{display:none}
+  summary::after{content:"+";color:var(--gold);font-size:1.4rem;line-height:1;transition:transform .2s}
+  details[open] summary::after{transform:rotate(45deg)}
+  details p{color:var(--muted);margin-top:12px;font-size:.95rem}
+
+  /* CONTACT / MAP */
+  .contact{background:var(--bg-2);padding-bottom:0}
+  .contact-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin:44px 0 56px}
+  .contact-item h4{color:var(--gold);font-size:.95rem;margin-bottom:8px;text-transform:uppercase;letter-spacing:1px}
+  .contact-item p,.contact-item a{color:#ddd;font-size:.95rem}
+  .contact-item a:hover{color:var(--gold)}
+  .map{width:100%;height:440px;border:0;display:block;filter:grayscale(.35) contrast(1.05)}
+
+  /* FOOTER */
+  footer{padding:60px 0 28px;border-top:3px solid var(--red)}
+  .foot-top{display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap;padding-bottom:36px;border-bottom:1px solid var(--line)}
+  .foot-top .brand img{width:64px;height:64px}
+  .foot-top p{color:var(--muted);font-size:.9rem;margin-top:12px;max-width:320px}
+  .socials{display:flex;gap:12px;margin-top:18px}
+  .socials a{width:40px;height:40px;border-radius:50%;background:var(--card);border:1px solid var(--line);display:grid;place-items:center;transition:background .2s}
+  .socials a:hover{background:var(--red)}
+  .socials svg{width:18px;height:18px}
+  .foot-links h4{font-size:.9rem;margin-bottom:12px}
+  .foot-links ul{list-style:none;display:grid;gap:8px}
+  .foot-links a{color:var(--muted);font-size:.9rem}
+  .foot-links a:hover{color:var(--gold)}
+  .foot-bottom{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding-top:22px;color:var(--muted);font-size:.82rem}
+
+  /* WHATSAPP FLOAT */
+  .wa-float{position:fixed;right:22px;bottom:22px;z-index:60;width:62px;height:62px;border-radius:50%;background:var(--wa);display:grid;place-items:center;box-shadow:0 8px 24px rgba(0,0,0,.4);transition:transform .2s}
+  .wa-float:hover{transform:scale(1.08)}
+  .wa-float svg{width:34px;height:34px;fill:#fff}
+  .wa-float::before{content:"";position:absolute;inset:0;border-radius:50%;background:var(--wa);animation:pulse 2s infinite;z-index:-1}
+  .wa-tip{position:absolute;right:74px;background:#fff;color:#111;padding:8px 14px;border-radius:8px;font-size:.85rem;font-weight:600;white-space:nowrap;box-shadow:0 4px 16px rgba(0,0,0,.3);opacity:0;transform:translateX(8px);transition:.25s;pointer-events:none}
+  .wa-float:hover .wa-tip{opacity:1;transform:none}
+  @keyframes pulse{0%{transform:scale(1);opacity:.6}100%{transform:scale(1.6);opacity:0}}
+
+  /* REVEAL */
+  .reveal{opacity:0;transform:translateY(30px);transition:opacity .7s,transform .7s}
+  .reveal.visible{opacity:1;transform:none}
+
+  /* RESPONSIVE */
+  @media (max-width:960px){
+    .nav-links{position:fixed;top:76px;left:0;right:0;flex-direction:column;background:rgba(12,12,12,.98);padding:24px 16px;gap:18px;transform:translateY(-130%);transition:transform .3s;border-bottom:1px solid var(--line)}
+    .nav-links.open{transform:none}
+    .menu-btn{display:block}
+    .nav-cta .btn{display:none}
+    .split{grid-template-columns:1fr;gap:48px}
+    .cards-3,.plans,.reviews,.gallery{grid-template-columns:1fr 1fr}
+    .plan.featured{transform:none}
+    .stats{grid-template-columns:1fr 1fr}
+  }
+  @media (max-width:640px){
+    section{padding:72px 0}
+    .cards-3,.plans,.reviews,.gallery,.contact-grid,.checks{grid-template-columns:1fr}
+    .gallery img{height:260px}
+    .brand span{display:none}
+    .map{height:340px}
+    .wa-float{width:56px;height:56px;right:16px;bottom:16px}
+  }
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}.reveal{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<header id="header">
+  <nav class="container nav">
+    <a href="#inicio" class="brand"><img src="img/logo.png" alt="Logo Evolución Gym"><span>EVOLUCIÓN <b>GYM</b></span></a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#nosotros">Nosotros</a></li>
+      <li><a href="#instalaciones">Instalaciones</a></li>
+      <li><a href="#planes">Planes</a></li>
+      <li><a href="#horario">Horario</a></li>
+      <li><a href="#ubicacion">Ubicación</a></li>
+    </ul>
+    <div class="nav-cta">
+      <a href="#" class="btn btn-gold js-wa" data-msg="¡Hola! Quiero inscribirme en Evolución Gym 💪">Inscríbete</a>
+      <button class="menu-btn" id="menuBtn" aria-label="Abrir menú">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+    </div>
+  </nav>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero" id="inicio">
+  <div class="hero-bg"></div>
+  <div class="container hero-content">
+    <img src="img/logo.png" alt="" class="hero-logo">
+    <div class="open-pill"><span class="dot" id="heroDot"></span><span id="heroStatus">Consultando horario…</span></div>
+    <h1>Entrena hoy.<br><span class="grad">Evoluciona</span> siempre.</h1>
+    <p>Más que un gimnasio, somos una comunidad. Equipo profesional, ambiente motivador y el impulso que necesitas para alcanzar tu mejor versión.</p>
+    <div class="hero-actions">
+      <a href="#" class="btn btn-primary js-wa" data-msg="¡Hola! Me gustaría información para inscribirme en Evolución Gym.">Quiero inscribirme</a>
+      <a href="#planes" class="btn btn-outline">Ver planes</a>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="stats reveal">
+    <div class="stat"><strong>+30</strong><span>Máquinas y estaciones</span></div>
+    <div class="stat"><strong>6 días</strong><span>Abierto a la semana</span></div>
+    <div class="stat"><strong>16 h</strong><span>De lunes a viernes</span></div>
+    <div class="stat"><strong>100%</strong><span>Actitud y comunidad</span></div>
+  </div>
+</div>
+
+<!-- ============ NOSOTROS ============ -->
+<section id="nosotros">
+  <div class="container split">
+    <div class="split-img reveal"><img src="img/instalaciones-2.webp" alt="Área de peso libre y máquinas en Evolución Gym"></div>
+    <div class="reveal">
+      <div class="eyebrow">Sobre nosotros</div>
+      <h2 class="section-title">Impulsa tu <span class="grad">evolución</span></h2>
+      <p class="section-sub">En Evolución Gym creemos que cada entrenamiento te acerca a una mejor versión de ti. Contamos con máquinas de fuerza, peso libre y cardio en un espacio amplio, limpio y seguro, para que entrenes a tu ritmo sin importar tu nivel.</p>
+      <ul class="checks">
+        <li>Equipo de fuerza profesional</li>
+        <li>Zona de cardio Precor</li>
+        <li>Peso libre y discos</li>
+        <li>Asesoría para principiantes</li>
+        <li>Espacios amplios y ventilados</li>
+        <li>Ambiente familiar y seguro</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ QUÉ OFRECEMOS ============ -->
+<section class="offer">
+  <div class="container center">
+    <div class="eyebrow">Lo que ofrecemos</div>
+    <h2 class="section-title">Todo para tu entrenamiento</h2>
+    <p class="section-sub">Todo lo que necesitas para ganar fuerza, mejorar tu condición y mantenerte constante.</p>
+    <div class="cards-3" style="text-align:left">
+      <div class="feature reveal">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6.5 6.5v11M17.5 6.5v11M3 9v6M21 9v6M6.5 12h11"/></svg></div>
+        <h3>Fuerza y musculación</h3>
+        <p>Máquinas guiadas, peso libre y estaciones para trabajar todo el cuerpo con seguridad y técnica.</p>
+      </div>
+      <div class="feature reveal">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
+        <h3>Zona cardio</h3>
+        <p>Elípticas y caminadoras de alto rendimiento para quemar calorías y mejorar tu resistencia.</p>
+      </div>
+      <div class="feature reveal">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2M16 3.1a4 4 0 0 1 0 7.8M21 21v-2a4 4 0 0 0-3-3.9"/></svg></div>
+        <h3>Comunidad</h3>
+        <p>Entrena rodeado de personas con tus mismas metas. Aquí la motivación se contagia.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ GALERÍA ============ -->
+<section id="instalaciones">
+  <div class="container center">
+    <div class="eyebrow">Galería</div>
+    <h2 class="section-title">Nuestras instalaciones</h2>
+    <p class="section-sub">Conoce el espacio donde vas a transformar tu cuerpo. Da clic en una foto para verla completa.</p>
+    <div class="gallery">
+      <button class="reveal" data-label="Zona de cardio y máquinas"><img src="img/instalaciones-1.webp" alt="Zona de cardio con elípticas Precor y máquinas de fuerza"></button>
+      <button class="reveal" data-label="Área de fuerza y peso libre"><img src="img/instalaciones-2.webp" alt="Área de fuerza con discos, prensa y bancos"></button>
+      <button class="reveal" data-label="Máquinas guiadas"><img src="img/instalaciones-3.webp" alt="Máquina de abductores y elípticas"></button>
+    </div>
+  </div>
+</section>
+
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <button class="lb-btn lb-close" id="lbClose" aria-label="Cerrar">✕</button>
+  <button class="lb-btn lb-prev" id="lbPrev" aria-label="Anterior">‹</button>
+  <img id="lbImg" src="" alt="">
+  <button class="lb-btn lb-next" id="lbNext" aria-label="Siguiente">›</button>
+</div>
+
+<!-- ============ PLANES ============ -->
+<section class="pricing" id="planes">
+  <div class="container center">
+    <div class="eyebrow">Planes</div>
+    <h2 class="section-title">Elige tu plan</h2>
+    <p class="section-sub">Planes accesibles para que empieces hoy mismo. Sin letras chiquitas.</p>
+    <div class="plans" style="text-align:left">
+      <div class="plan reveal">
+        <h3>Visita</h3>
+        <p class="desc">Ideal para conocer el gym o entrenar ocasionalmente.</p>
+        <div class="price">$50 <small>/ día</small></div>
+        <ul>
+          <li>Acceso a todas las áreas</li>
+          <li>Zona de cardio y fuerza</li>
+          <li>Sin inscripción</li>
+        </ul>
+        <a href="#" class="btn btn-outline js-wa" data-msg="¡Hola! Me interesa la VISITA de un día en Evolución Gym.">Lo quiero</a>
+      </div>
+      <div class="plan featured reveal">
+        <span class="badge">Más popular</span>
+        <h3>Mensualidad</h3>
+        <p class="desc">Entrena todo el mes con acceso ilimitado.</p>
+        <div class="price">$450 <small>/ mes</small></div>
+        <ul>
+          <li>Acceso ilimitado en horario</li>
+          <li>Todas las áreas del gym</li>
+          <li>Asesoría inicial de rutina</li>
+          <li>Casilleros disponibles</li>
+        </ul>
+        <a href="#" class="btn btn-gold js-wa" data-msg="¡Hola! Me interesa la MENSUALIDAD en Evolución Gym.">Inscribirme</a>
+      </div>
+      <div class="plan reveal">
+        <h3>Trimestral</h3>
+        <p class="desc">Compromiso a largo plazo con mejor precio.</p>
+        <div class="price">$1,200 <small>/ 3 meses</small></div>
+        <ul>
+          <li>Todo lo de la mensualidad</li>
+          <li>Ahorra $150</li>
+          <li>Seguimiento de progreso</li>
+        </ul>
+        <a href="#" class="btn btn-outline js-wa" data-msg="¡Hola! Me interesa el plan TRIMESTRAL en Evolución Gym.">Lo quiero</a>
+      </div>
+    </div>
+    <p class="note">* Precios de referencia. Pregunta por promociones de estudiante y pareja.</p>
+  </div>
+</section>
+
+<!-- ============ HORARIO ============ -->
+<section id="horario">
+  <div class="container split">
+    <div class="reveal">
+      <div class="eyebrow">Horario</div>
+      <h2 class="section-title">Te esperamos para entrenar</h2>
+      <p class="section-sub">Abrimos temprano para que entrenes antes del trabajo o la escuela, y cerramos tarde para que no tengas pretexto.</p>
+      <div style="margin-top:28px;display:flex;gap:12px;flex-wrap:wrap">
+        <a href="#ubicacion" class="btn btn-primary">Cómo llegar</a>
+        <a href="#" class="btn btn-outline js-wa" data-msg="¡Hola! Tengo una duda sobre el horario de Evolución Gym.">Preguntar por WhatsApp</a>
+      </div>
+    </div>
+    <div class="schedule-box reveal">
+      <div class="schedule-head">
+        <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>Horario de atención</h3>
+        <span class="status"><span class="dot" id="schedDot"></span><span id="schedStatus"></span></span>
+      </div>
+      <div id="scheduleRows"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ RESEÑAS ============ -->
+<section class="offer">
+  <div class="container center">
+    <div class="eyebrow">Reseñas</div>
+    <h2 class="section-title">Lo que dicen nuestros socios</h2>
+    <div class="reviews">
+      <div class="review reveal"><div class="stars">★★★★★</div><p>“Excelente equipo y muy limpio. El ambiente es súper bueno y los coaches siempre te apoyan.”</p><strong>— Socio Evolución</strong></div>
+      <div class="review reveal"><div class="stars">★★★★★</div><p>“Tiene muchas máquinas y casi nunca tienes que esperar. El horario es perfecto para mí.”</p><strong>— Socia Evolución</strong></div>
+      <div class="review reveal"><div class="stars">★★★★★</div><p>“Buen precio, buena atención y un espacio muy amplio. Lo recomiendo totalmente.”</p><strong>— Socio Evolución</strong></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CTA ============ -->
+<section class="cta">
+  <div class="cta-bg"></div>
+  <div class="container">
+    <h2>Conviértete en tu mejor versión</h2>
+    <p>Tu primer paso empieza hoy. Escríbenos y te ayudamos a comenzar.</p>
+    <a href="#" class="btn btn-gold js-wa" data-msg="¡Hola! Estoy listo para empezar en Evolución Gym 💪">Empieza ahora</a>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section>
+  <div class="container">
+    <div class="center">
+      <div class="eyebrow">FAQ</div>
+      <h2 class="section-title">Preguntas frecuentes</h2>
+    </div>
+    <div class="faq-list">
+      <details><summary>¿Cuál es el horario del gimnasio?</summary><p>Lunes a viernes de 6:00 a.m. a 10:00 p.m., sábados de 7:00 a.m. a 3:30 p.m. Los domingos permanecemos cerrados.</p></details>
+      <details><summary>¿Necesito experiencia para inscribirme?</summary><p>¡Para nada! Recibimos a personas de todos los niveles y te damos una asesoría inicial para que uses el equipo de forma correcta y segura.</p></details>
+      <details><summary>¿Cómo me inscribo?</summary><p>Puedes visitarnos directamente en el gimnasio o escribirnos por WhatsApp para apartar tu lugar y resolver tus dudas.</p></details>
+      <details><summary>¿Puedo ir un solo día a probar?</summary><p>Sí, contamos con pase de visita por día para que conozcas nuestras instalaciones antes de elegir un plan.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- ============ UBICACIÓN ============ -->
+<section class="contact" id="ubicacion">
+  <div class="container">
+    <div class="center">
+      <div class="eyebrow">Ubicación</div>
+      <h2 class="section-title">Visítanos</h2>
+      <p class="section-sub">Estamos listos para recibirte. Da clic en el mapa para obtener indicaciones.</p>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-item">
+        <h4>Dirección</h4>
+        <p>Evolución Gym</p>
+        <p>Huehuetoca, Estado de México</p>
+        <a href="https://www.google.com.mx/maps/place/Evoluci%C3%B3n+Gym/@19.834687,-99.2050139,16z/data=!4m6!3m5!1s0x85d227996584bd85:0xe202a60a17cd075e!8m2!3d19.834687!4d-99.2050139" target="_blank" rel="noopener" id="mapsLink">Abrir en Google Maps →</a>
+      </div>
+      <div class="contact-item">
+        <h4>Horario</h4>
+        <p>Lun – Vie: 6:00 a.m. – 10:00 p.m.</p>
+        <p>Sábado: 7:00 a.m. – 3:30 p.m.</p>
+        <p>Domingo: Cerrado</p>
+      </div>
+      <div class="contact-item">
+        <h4>Contacto</h4>
+        <a href="#" class="js-wa" data-msg="¡Hola! Quisiera más información sobre Evolución Gym.">WhatsApp: escríbenos</a>
+      </div>
+    </div>
+  </div>
+  <iframe class="map" title="Mapa de Evolución Gym" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+    src="https://maps.google.com/maps?q=19.834687,-99.2050139&hl=es&z=16&output=embed"></iframe>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="container">
+    <div class="foot-top">
+      <div>
+        <a href="#inicio" class="brand"><img src="img/logo.png" alt="Evolución Gym"><span>EVOLUCIÓN <b>GYM</b></span></a>
+        <p>Entrena hoy, evoluciona siempre. Tu mejor versión empieza aquí.</p>
+        <div class="socials">
+          <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M14 9V7c0-.9.2-1.5 1.6-1.5H17V2.2C16.6 2.1 15.5 2 14.3 2 11.7 2 10 3.6 10 6.5V9H7v3.7h3V22h4v-9.3h3l.5-3.7H14z"/></svg></a>
+          <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg></a>
+          <a href="#" class="js-wa" aria-label="WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.5-3.9-4.7-4.1-.1-.2-1.1-1.5-1.1-2.8s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.3 0 .5l-.3.5-.4.4c-.1.1-.3.3-.1.6.2.3.7 1.2 1.6 1.9 1.1 1 2 1.3 2.3 1.4.3.1.4.1.6-.1l.8-1c.2-.3.4-.2.6-.1l1.9.9c.3.1.5.2.5.3.1.2.1.7-.2 1.2z"/></svg></a>
+        </div>
+      </div>
+      <div class="foot-links">
+        <h4>Navegación</h4>
+        <ul>
+          <li><a href="#nosotros">Nosotros</a></li>
+          <li><a href="#instalaciones">Instalaciones</a></li>
+          <li><a href="#planes">Planes</a></li>
+          <li><a href="#horario">Horario</a></li>
+          <li><a href="#ubicacion">Ubicación</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© <span id="year"></span> Evolución Gym. Todos los derechos reservados.</span>
+      <span>Hecho con 💪 para nuestra comunidad</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ============ WHATSAPP FLOTANTE ============ -->
+<a href="#" class="wa-float js-wa" data-msg="¡Hola! Quisiera información sobre Evolución Gym." aria-label="Escríbenos por WhatsApp">
+  <span class="wa-tip">¿Dudas? ¡Escríbenos!</span>
+  <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.5-3.9-4.7-4.1-.1-.2-1.1-1.5-1.1-2.8s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.3 0 .5l-.3.5-.4.4c-.1.1-.3.3-.1.6.2.3.7 1.2 1.6 1.9 1.1 1 2 1.3 2.3 1.4.3.1.4.1.6-.1l.8-1c.2-.3.4-.2.6-.1l1.9.9c.3.1.5.2.5.3.1.2.1.7-.2 1.2z"/></svg>
+</a>
+
+<script>
+  /* ====== CONFIGURACIÓN ======
+     Cambia este número por el WhatsApp real del gym
+     (formato internacional sin "+", espacios ni guiones: 52 + 10 dígitos) */
+  const WHATSAPP_NUMBER = '5215500000000';
+
+  // WhatsApp: todos los botones .js-wa abren chat con mensaje prellenado
+  document.querySelectorAll('.js-wa').forEach(el => {
+    const msg = el.dataset.msg || '¡Hola! Quisiera información sobre Evolución Gym.';
+    el.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
+    el.target = '_blank';
+    el.rel = 'noopener';
+  });
+
+  // Horario (0 = domingo). Horas en formato decimal.
+  const SCHEDULE = [
+    { day: 'Domingo',   open: null, close: null },
+    { day: 'Lunes',     open: 6, close: 22 },
+    { day: 'Martes',    open: 6, close: 22 },
+    { day: 'Miércoles', open: 6, close: 22 },
+    { day: 'Jueves',    open: 6, close: 22 },
+    { day: 'Viernes',   open: 6, close: 22 },
+    { day: 'Sábado',    open: 7, close: 15.5 },
+  ];
+  const fmt = h => {
+    const hh = Math.floor(h), mm = Math.round((h - hh) * 60);
+    const suffix = hh < 12 ? 'a.m.' : 'p.m.';
+    const h12 = hh % 12 === 0 ? 12 : hh % 12;
+    return `${h12}:${String(mm).padStart(2, '0')} ${suffix}`;
+  };
+
+  // Hora actual en la zona horaria del gym (Ciudad de México)
+  const parts = new Intl.DateTimeFormat('en-US', { timeZone: 'America/Mexico_City', weekday: 'short', hour: 'numeric', minute: 'numeric', hour12: false }).formatToParts(new Date());
+  const get = t => parts.find(p => p.type === t).value;
+  const today = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].indexOf(get('weekday'));
+  const nowH = (parseInt(get('hour'), 10) % 24) + parseInt(get('minute'), 10) / 60;
+  const t = SCHEDULE[today];
+  const isOpen = t.open !== null && nowH >= t.open && nowH < t.close;
+
+  // Próxima apertura
+  let statusText;
+  if (isOpen) {
+    statusText = `Abierto ahora · Cierra a las ${fmt(t.close)}`;
+  } else {
+    let i = 0, d = today;
+    if (t.open !== null && nowH < t.open) { statusText = `Cerrado · Abre hoy a las ${fmt(t.open)}`; }
+    else {
+      do { d = (d + 1) % 7; i++; } while (SCHEDULE[d].open === null && i < 7);
+      statusText = `Cerrado · Abre ${i === 1 ? 'mañana' : 'el ' + SCHEDULE[d].day.toLowerCase()} a las ${fmt(SCHEDULE[d].open)}`;
+    }
+  }
+  ['hero', 'sched'].forEach(p => {
+    document.getElementById(p + 'Dot').classList.add(isOpen ? 'on' : 'off');
+    document.getElementById(p + 'Status').textContent = p === 'hero' ? statusText : (isOpen ? 'Abierto ahora' : 'Cerrado');
+  });
+  // Render de filas empezando en lunes
+  const rows = document.getElementById('scheduleRows');
+  [1,2,3,4,5,6,0].forEach(i => {
+    const s = SCHEDULE[i];
+    const row = document.createElement('div');
+    row.className = 'schedule-row' + (i === today ? ' today' : '');
+    row.innerHTML = `<span>${s.day}${i === today ? ' (hoy)' : ''}</span>` +
+      (s.open === null ? '<span class="closed">Cerrado</span>' : `<span>${fmt(s.open)} – ${fmt(s.close)}</span>`);
+    rows.appendChild(row);
+  });
+
+  // Header al hacer scroll
+  const header = document.getElementById('header');
+  const onScroll = () => header.classList.toggle('scrolled', window.scrollY > 40);
+  window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
+
+  // Menú móvil
+  const navLinks = document.getElementById('navLinks');
+  document.getElementById('menuBtn').addEventListener('click', () => navLinks.classList.toggle('open'));
+  navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
+
+  // Galería / lightbox
+  const items = [...document.querySelectorAll('.gallery button')];
+  const lb = document.getElementById('lightbox'), lbImg = document.getElementById('lbImg');
+  let idx = 0;
+  const show = i => { idx = (i + items.length) % items.length; const img = items[idx].querySelector('img'); lbImg.src = img.src; lbImg.alt = img.alt; };
+  items.forEach((b, i) => b.addEventListener('click', () => { show(i); lb.classList.add('open'); document.body.style.overflow = 'hidden'; }));
+  const closeLb = () => { lb.classList.remove('open'); document.body.style.overflow = ''; };
+  document.getElementById('lbClose').onclick = closeLb;
+  document.getElementById('lbPrev').onclick = e => { e.stopPropagation(); show(idx - 1); };
+  document.getElementById('lbNext').onclick = e => { e.stopPropagation(); show(idx + 1); };
+  lb.addEventListener('click', e => { if (e.target === lb) closeLb(); });
+  document.addEventListener('keydown', e => {
+    if (!lb.classList.contains('open')) return;
+    if (e.key === 'Escape') closeLb();
+    if (e.key === 'ArrowLeft') show(idx - 1);
+    if (e.key === 'ArrowRight') show(idx + 1);
+  });
+
+  // Animaciones al hacer scroll
+  const io = new IntersectionObserver(entries => entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('visible'); io.unobserve(en.target); } }), { threshold: .12 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
